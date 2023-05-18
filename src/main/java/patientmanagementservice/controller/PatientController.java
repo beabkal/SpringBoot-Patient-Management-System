@@ -4,9 +4,13 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 import patientmanagementservice.dto.PatientDto;
+import patientmanagementservice.exception.ErrorDetails;
+import patientmanagementservice.exception.ResourceNotFoundException;
 import patientmanagementservice.service.PatientService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -45,5 +49,13 @@ public class PatientController {
     public ResponseEntity<String> deletePatient(@PathVariable Long id){
         patientService.deletePatient(id);
         return new ResponseEntity<>("Patient Deleted Successfully!", HttpStatus.OK);
+    }
+
+    @PostMapping("{phoneNumberOrEmail}/search")
+    public ResponseEntity<PatientDto> getPatientByPhoneNumberOrEmail(@PathVariable String phoneNumberOrEmail){
+
+        PatientDto patientDto = patientService.getPatientByPhoneNumberOrEmail(phoneNumberOrEmail);
+
+        return new ResponseEntity<>(patientDto, HttpStatus.OK);
     }
 }

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import patientmanagementservice.dto.PatientDto;
 import patientmanagementservice.entity.Patient;
+import patientmanagementservice.exception.ResourceNotFoundException;
 import patientmanagementservice.mapper.AutoPatientMapper;
 import patientmanagementservice.repository.PatientRepository;
 import patientmanagementservice.service.PatientService;
@@ -19,7 +20,16 @@ public class PatientServiceImpl implements PatientService {
     private PatientRepository patientRepository;
     @Override
     public PatientDto getPatient(Long id) {
-        Patient patient = patientRepository.findById(id).get();
+        Patient patient = patientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Patient", "id", Long.toString(id)));
+        return AutoPatientMapper.MAPPER.mapToPatientDto(patient);
+    }
+
+    @Override
+    public PatientDto getPatientByPhoneNumberOrEmail(String phoneNumberOrEmail) {
+
+        Patient patient = patientRepository.getPatientByPhoneNumberOrEmail(phoneNumberOrEmail, phoneNumberOrEmail).orElseThrow(
+                () -> new ResourceNotFoundException("Patient", "phoneNumberOrEmail", phoneNumberOrEmail)
+        );
         return AutoPatientMapper.MAPPER.mapToPatientDto(patient);
     }
 
@@ -43,13 +53,14 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public PatientDto updatePatient(PatientDto patientDto) {
-        Patient patientToUpdate = patientRepository.findById(patientDto.getId()).get();
+        Patient patientToUpdate = patientRepository.findById(patientDto.getId()).orElseThrow(() -> new ResourceNotFoundException("Patient", "id", Long.toString(patientDto.getId())));
 
         if(patientDto.getFirstName() != null) patientToUpdate.setFirstName(patientDto.getFirstName());
         if(patientDto.getLastName() != null) patientToUpdate.setLastName(patientDto.getLastName());
         if(patientDto.getAddress() != null) patientToUpdate.setAddress(patientDto.getAddress());
-        if (patientDto.getInssuranceId() != null) patientToUpdate.setInssuranceId(patientDto.getInssuranceId());
+        if (patientDto.getInsuranceId() != null) patientToUpdate.setInsuranceId(patientDto.getInsuranceId());
         if(patientDto.getPhoneNumber() != null) patientToUpdate.setPhoneNumber(patientDto.getPhoneNumber());
+        if (patientDto.getEmail() != null) patientToUpdate.setEmail(patientDto.getEmail());
 
         Patient updatedPatient = patientRepository.save(patientToUpdate);
 
@@ -61,6 +72,6 @@ public class PatientServiceImpl implements PatientService {
         if(patientRepository.existsById(id)){
             patientRepository.deleteById(id);
         }
-        else System.out.println("Patient Not Found!");
+        else throw new ResourceNotFoundException("Patient", "id", Long.toString(id));
     }
 }

@@ -19,6 +19,7 @@ public class Patient {
     private String firstName;
     private String lastName;
     private String phoneNumber;
-    private String inssuranceId;
+    private String insuranceId;
+    private String email;
     private String address;
 }
