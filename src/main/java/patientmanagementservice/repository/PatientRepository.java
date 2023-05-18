@@ -9,4 +9,6 @@ import java.util.Optional;
 public interface PatientRepository extends JpaRepository<Patient, Long> {
 
     Optional<Patient> getPatientByPhoneNumberOrEmail(String phoneNumber, String email);
+    Optional<Patient> getPatientByPhoneNumber(String phoneNumner);
+    Optional<Patient> getPatientByEmail(String email);
 }
