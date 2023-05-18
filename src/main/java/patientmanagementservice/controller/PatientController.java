@@ -1,5 +1,6 @@
 package patientmanagementservice.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,13 +34,17 @@ public class PatientController {
     }
 
     @PostMapping("create")
-    public ResponseEntity<PatientDto> createPatient( @RequestBody PatientDto patientDto){
+    public ResponseEntity<PatientDto> createPatient(
+            @Valid
+            @RequestBody PatientDto patientDto){
         PatientDto savedPatient = patientService.createPatient(patientDto);
         return new ResponseEntity<>(savedPatient, HttpStatus.CREATED);
     }
 
     @PutMapping("{id}/update")
-    public ResponseEntity<PatientDto> updatePatient(@PathVariable Long id, @RequestBody PatientDto patientDto){
+    public ResponseEntity<PatientDto> updatePatient(
+            @Valid
+            @PathVariable Long id, @RequestBody PatientDto patientDto){
         patientDto.setId(id);
         PatientDto updatedPatient = patientService.updatePatient(patientDto);
         return new ResponseEntity<>(updatedPatient, HttpStatus.OK);
