@@ -23,4 +23,28 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(PhoneNumberAlreadyExistsException.class)
+    public ResponseEntity<ErrorDetails> handlePhoneNumberAlreadyExistsException(PhoneNumberAlreadyExistsException exception, WebRequest webRequest){
+
+        ErrorDetails errorDetails = new ErrorDetails(
+                LocalDateTime.now(),
+                exception.getMessage(),
+                webRequest.getDescription(false),
+                "PATIENT_PHONE_NUMBER_ALREADY_EXISTS"
+        );
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<ErrorDetails> handleEmailAlreadyExistsException(EmailAlreadyExistsException exception, WebRequest webRequest){
+
+        ErrorDetails errorDetails = new ErrorDetails(
+                LocalDateTime.now(),
+                exception.getMessage(),
+                webRequest.getDescription(false),
+                "PATIENT_EMAIL_ALREADY_EXISTS"
+        );
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    }
 }

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import patientmanagementservice.dto.PatientDto;
 import patientmanagementservice.entity.Patient;
+import patientmanagementservice.exception.EmailAlreadyExistsException;
 import patientmanagementservice.exception.PhoneNumberAlreadyExistsException;
 import patientmanagementservice.exception.ResourceNotFoundException;
 import patientmanagementservice.mapper.AutoPatientMapper;
@@ -51,9 +52,9 @@ public class PatientServiceImpl implements PatientService {
             throw new PhoneNumberAlreadyExistsException("Phone Number Already Exists!");
         }
 
-//        if (patientRepository.getPatientByEmail(patientDto.getEmail()).isPresent()){
-//            throw  null;
-//        }
+        if (patientRepository.getPatientByEmail(patientDto.getEmail()).isPresent()){
+            throw  new EmailAlreadyExistsException("Email Already Exists!");
+        }
         Patient newPatient = AutoPatientMapper.MAPPER.mapToPatient(patientDto);
         Patient savedPatient = patientRepository.save(newPatient);
         return AutoPatientMapper.MAPPER.mapToPatientDto(savedPatient);
