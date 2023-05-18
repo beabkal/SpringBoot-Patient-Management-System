@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import patientmanagementservice.entity.Address;
 
 @Setter
 @Getter
@@ -16,5 +17,5 @@ public class PatientDto {
     private String phoneNumber;
     private String insuranceId;
     private String email;
-    private String address;
+    private Address address;
 }
