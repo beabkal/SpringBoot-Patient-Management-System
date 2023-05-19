@@ -56,7 +56,7 @@ public class PatientController {
         return new ResponseEntity<>("Patient Deleted Successfully!", HttpStatus.OK);
     }
 
-    @PostMapping("{phoneNumberOrEmail}/search")
+    @GetMapping("{phoneNumberOrEmail}/search")
     public ResponseEntity<PatientDto> getPatientByPhoneNumberOrEmail(@PathVariable String phoneNumberOrEmail){
 
         PatientDto patientDto = patientService.getPatientByPhoneNumberOrEmail(phoneNumberOrEmail);
